@@ -6,7 +6,7 @@ const pageRouter = require('./app/routes/pages')
 const imgRouter = require('./routes/img')
 const apiRouter = require('./routes/api')
 const Chamado = require("./app/model/Chamado")
-const Usuario = require("./app/model/Chamado")
+const Usuario = require("./app/model/Usuario")
 const bcrypt = require('bcrypt')
 const bodyParser = require('body-parser');
 
@@ -46,12 +46,6 @@ app.get('/', async function (req, res, next) {
 
 
 })
-
-// 👇️ if you use CommonJS require()
-// const fs = require('fs/promises');
-// const path = require('path');
-
-
 
 
 app.use('/imagens', imgRouter)
