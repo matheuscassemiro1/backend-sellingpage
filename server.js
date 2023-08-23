@@ -2,32 +2,33 @@ const express = require(`express`);
 const session = require('express-session');
 const store = new session.MemoryStore;
 const path = require('path');
-const pageRouter = require('./app/routes/pages')
-const imgRouter = require('./routes/img')
-const apiRouter = require('./routes/api')
-const Chamado = require("./app/model/Chamado")
-const Usuario = require("./app/model/Usuario")
+const pageRouter = require('./public/routes/pages')
+const imgRouter = require('./public/routes/img')
+const apiRouter = require('./public/routes/api')
+const Produto = require("./model/Produto")
+const Usuario = require("./model/Usuario")
 const bcrypt = require('bcrypt')
 const bodyParser = require('body-parser');
 
 //USADO PRA UTURAMENTE DELETAR AS IMAGENS
 const fs = require('fs/promises')
 
+app = express()
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
 });
-app = express()
 
-app.use(express.static(__dirname + '/app/public'))
+
+app.use(express.static(__dirname + '/public'))
 
 app.disable('x-powered-by');
 
 
 //REGRAS DE SESSÃO BASEADA EM COOKIES
 app.use(session({
-    secret: 'xhtdwu2rw',
+    secret: 'xcvjrmtmrcs2k23',
     resave: false,
     cookie: { maxAge: 28800000 },
     saveUninitialized: false,
@@ -48,9 +49,9 @@ app.get('/', async function (req, res, next) {
 })
 
 
-app.use('/imagens', imgRouter)
+//app.use('/imagens', imgRouter)
 app.use(`/pages`, pageRouter);
-app.use(`/api`, apiRouter);
+//app.use(`/api`, apiRouter);
 
 app.listen('80', function () {
     console.log('ouvindo na porta 80')
