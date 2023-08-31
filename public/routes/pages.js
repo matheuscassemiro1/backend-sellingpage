@@ -10,10 +10,6 @@ async function logado(req, res, next) {
         aux2 = aux.split(' ');
         token = aux2[1];
         if (jwt.verify(token, process.env.SECRETKEY)) {
-            bb = jwt.verify(token, process.env.SECRETKEY)
-            console.log(bb.dono)
-            console.log('DIVISOR')
-            console.log(jwt.decode(token, { complete: true }))
             next()
         } else {
             res.clearCookie("token");

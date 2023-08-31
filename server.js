@@ -44,6 +44,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(`/api`, apiRouter);
+app.use(`/imagens`, imgRouter);
 app.get('/', async function (req, res, next) {
 
     res.sendFile(path.join(__dirname, './public/pages/index.html'))

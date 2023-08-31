@@ -7,14 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cervejaria Multimarcas - Since 1999</title>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="icon" href="../img/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
-
     <div class="child"> <img src="./../img/logo.png" style="width: 150px; margin-left: -4rem;" alt=""></div>
 
 
@@ -77,17 +72,21 @@
         /* Center horizontally*/
         margin: 0 auto;
     }
-
-
 </style>
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
     <div id="conteudo" class="row mb-2 mt-1 py-2 ml-1 px-5">
-        <button class="btn btn-success mb-3">Adicionar novo produto</button>
+        <button class="btn btn-success mb-3" id="abrirModalNovoProduto">Adicionar novo produto</button>
         <div class="col-md-3" style="display: block;">
             <div class="card flex-row mb-4 ml-1 px-1 text-center" style="width: 18rem;">
                 <div class="card-body">
@@ -99,12 +98,41 @@
                         <button class="btn btn-info">Alterar Foto</button>
                         <button class="btn btn-danger">Excluir</button>
                     </div>
-                        
+
                 </div>
             </div>
-           
-        </div>
 
+        </div>
+        <div id="modalNovoProduto" class="modal mt-5 pt-3" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Cadastro de Produto</h5>
+                        <button type="button" id="botaoFechaModal" class="btn-close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formularioProduto">
+                            <div class="mb-1">
+                                <label for="exampleFormControlInput1" class="form-label"><b>Nome do Produto</b></label>
+                                <input type="text" class="form-control mb-2" id="nomeDoProduto"
+                                    placeholder="ex: Brahma Litrão">
+                                <label for="exampleFormControlInput1" class="form-label"><b>Preço</b></label>
+                                <input type="text" class="form-control" id="precoDoProduto" placeholder="ex: 12,90">
+                            </div>
+                            <div class="mb-3">
+                                <label for="arquivo" class="form-label"><b>Imagem</b></label>
+                                <input id="arquivo" class="form-control" type="file" id="arquivo" accept="image/*">
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Cadastrar</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="../functions/produtos.js"></script>
 </body>
 <footer>
 
