@@ -18,9 +18,10 @@ loginForm.addEventListener("submit", (e) => {
             body: JSON.stringify({ login: login.value, senha: senha.value })
         }).then(
             async function (resposta) {
-                a = await resposta.json()
-                console.log(a)
-                if (a.status == 'sucesso') {
+                resposta = await resposta.json()
+                console.log(resposta)
+                if (resposta.status == 'sucesso') {
+                    localStorage.setItem('token', `Bearer ${resposta.mensagem}`)
                     location.href = 'pages/gestao'
                 }
                 else { alert('Login ou senha incorretos') }

@@ -17,6 +17,10 @@ Usuario.init({
     senha: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    dono: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
     }
 }, { sequelize: db, modelName: 'usuarios' })
 

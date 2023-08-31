@@ -9,6 +9,9 @@ const Produto = require("./model/Produto")
 const Usuario = require("./model/Usuario")
 const bcrypt = require('bcrypt')
 const bodyParser = require('body-parser');
+const cookieparser = require('cookie-parser')
+require('dotenv').config()
+
 
 //USADO PRA UTURAMENTE DELETAR AS IMAGENS
 const fs = require('fs/promises')
@@ -40,18 +43,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
+app.use(`/api`, apiRouter);
 app.get('/', async function (req, res, next) {
 
     res.sendFile(path.join(__dirname, './public/pages/index.html'))
 
 
 })
-
+app.use(cookieparser());
+app.get('/login', async (req, res, next) => {
+    res.sendFile(path.join(__dirname, `./public/pages/login.html`))
+})
 
 //app.use('/imagens', imgRouter)
 app.use(`/pages`, pageRouter);
-//app.use(`/api`, apiRouter);
+
 
 app.listen('80', function () {
     console.log('ouvindo na porta 80')
