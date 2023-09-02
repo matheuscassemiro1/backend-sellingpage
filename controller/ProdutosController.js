@@ -31,6 +31,22 @@ exports.cadastrarProduto = async function (req, res, next) {
 }
 
 exports.listarProdutos = async (req, res, next) => {
-    const resultado = await Produto.findAll()
-    res.send(resultado)
+    try {
+        const resultado = await Produto.findAll()
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    }
+    catch (erro) {
+        console.log(erro)
+    }
+}
+
+
+exports.deletarProduto = async (req, res, next) => {
+    try {
+        const resultado = await Produto.destroy({ where: { id: req.body.id } })
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    } catch (erro) {
+
+    }
+
 }

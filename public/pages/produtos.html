@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <div class="child"> <img src="./../img/logo.png" style="width: 150px; margin-left: -4rem;" alt=""></div>
-
+    <script src="../functions/produtos.js"></script>
 
 
     <nav class="navbar navbar-dark bg-primary">
@@ -108,7 +108,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Cadastro de Produto</h5>
-                        <button type="button" id="botaoFechaModal" class="btn-close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" id="botaoFechaModal" class="btn-close" data-dismiss="modal"
+                            aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -132,7 +133,12 @@
             </div>
         </div>
     </div>
-<script src="../functions/produtos.js"></script>
+    <script>
+        carregarProdutos()
+        funcaoFormulario()
+        funcaoAbrirModal()
+    </script>
+
 </body>
 <footer>
 
