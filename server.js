@@ -16,6 +16,8 @@ require('dotenv').config()
 //USADO PRA UTURAMENTE DELETAR AS IMAGENS
 const fs = require('fs/promises')
 
+//PERMITINDO ACESSO SEM MUITAS BURORACIAS NO CABEÇALHO
+
 app = express()
 
 app.use(function (req, res, next) {

@@ -116,7 +116,7 @@ async function carregarProdutos() {
 
                 const imagemProduto = document.createElement('img')
                 imagemProduto.src = `http://localhost/imagens/${produto.imagem}`
-                imagemProduto.style = 'Width: 150px; height: 150px'
+                imagemProduto.style = 'Width: 150px; height: 250px'
                 imagemProduto.classList.add('mb-2')
                 document.getElementById(div3Produto.id).appendChild(imagemProduto)
                 const precoProduto = document.createElement('h6')

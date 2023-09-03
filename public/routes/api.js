@@ -6,6 +6,7 @@ const ProdutosController = require('./../../controller/ProdutosController')
 const jwt = require('jsonwebtoken')
 
 
+
 apiRouter.post('/login', UsuariosController.tryLogin)
 apiRouter.post('/produtos', ProdutosController.cadastrarProduto)
 apiRouter.get('/produtos', ProdutosController.listarProdutos)

@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
-const jwtOptions = { expiresIn: 1000 }
+const jwtOptions = { expiresIn: 10000 }
 
 
 exports.tryLogin = async function (req, res, next) {
