@@ -132,9 +132,35 @@
                 </div>
             </div>
         </div>
+
+        <div id="modalAlterarFotoProduto" class="modal mt-5 pt-3" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> Alterar foto do produto -> <span id="idProdutoAltFoto"></span> <span
+                                id="produtoNome"></span></h5>
+                        <button type="button" id="botaoFechaAlterarFoto" class="btn-close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formularioAlterarFoto">
+                            <div class="mb-3">
+                                <label for="novaImagem" class="form-label"><b>Nova imagem</b></label>
+                                <input id="novaImagem" class="form-control" type="file" id="novaImagem"
+                                    accept="image/*">
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Alterar</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         carregarProdutos()
+        funcaoModalAlterarFoto()
         funcaoFormulario()
         funcaoAbrirModal()
     </script>

@@ -10,6 +10,38 @@ function funcaoAbrirModal() {
     }
 }
 
+function funcaoModalAlterarFoto() {
+    document.getElementById('formularioAlterarFoto').addEventListener('submit', async (e) => {
+        e.preventDefault()
+        idProduto = document.getElementById('idProdutoAltFoto')
+        novaImagem = document.getElementById('novaImagem')
+        if (idProduto.textContent == '' || novaImagem.value == '') {
+            alert('Houve um erro ao alterar a foto. Recarregue a página e faça novamente.')
+        } else {
+            aux = idProduto.textContent.split('#')
+            const id_produto = aux[1]
+
+            let formdata = new FormData()
+            let novaImagem = document.getElementById("novaImagem");
+            formdata.append('imagem', novaImagem.files[0]);
+            formdata.append('id', id_produto);
+
+            fetch('http://localhost:80/api/produto-foto', {
+                method: 'PUT',
+                body: formdata
+            }).then(async (retorno) => {
+                retorno = await retorno.json()
+                if (retorno.status == "sucesso") {
+                    alert('A foto do produto foi alterada com sucesso')
+                    location.reload()
+                } else {
+                    alert(retorno.status)
+                }
+            })
+        }
+    })
+}
+
 function funcaoFormulario() {
     document.getElementById('formularioProduto').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -103,11 +135,46 @@ async function carregarProdutos() {
                 botaoAltPreco.classList.add('btn')
                 botaoAltPreco.classList.add('btn-warning')
                 botaoAltPreco.textContent = 'Alterar Preço'
+                botaoAltPreco.onclick = async () => {
+                    if (confirm(`Deseja mesmo alterar o preço do produto ${produto.nome}?`)) {
+                        novoPreco = prompt('Insira o novo preço do produto:')
+                        await fetch('http://localhost/api/produtos', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            body: JSON.stringify({ id: produto.id, preco: novoPreco })
+                        }).then(async (retorno) => {
+                            retorno = await retorno.json()
+                            if (retorno.status == 'sucesso') {
+                                alert(`O produto ${produto.nome} teve seu preço alterado com sucesso!`)
+                                location.reload()
+                            } else {
+                                alert(retorno.mensagem)
+                            }
+                        })
+                    }
+
+
+                }
                 document.getElementById(divBotoes.id).appendChild(botaoAltPreco)
                 const botaoAltFoto = document.createElement('button')
                 botaoAltFoto.classList.add('btn')
                 botaoAltFoto.classList.add('btn-info')
                 botaoAltFoto.textContent = 'Alterar Foto'
+                botaoAltFoto.onclick = async () => {
+
+                    const modalAlt = document.getElementById('modalAlterarFotoProduto')
+                    const botaoFecharModalAlt = document.getElementById('botaoFechaAlterarFoto')
+                    botaoFecharModalAlt.onclick = () => {
+                        modalAlt.classList.remove('d-block')
+                    }
+                    document.getElementById('produtoNome').textContent = produto.nome
+                    document.getElementById('idProdutoAltFoto').textContent = `#${produto.id}`
+                    modalAlt.classList.add('d-block')
+
+                }
+
                 document.getElementById(divBotoes.id).appendChild(botaoAltFoto)
                 const botaoExcluir = document.createElement('button')
                 botaoExcluir.classList.add('btn')
@@ -119,7 +186,7 @@ async function carregarProdutos() {
                         headers: {
                             'Content-type': 'application/json'
                         },
-                        body: JSON.stringify({ id: produto.id })
+                        body: JSON.stringify({ id: produto.id, imagem: produto.imagem })
                     }).then(async (retorno) => {
                         retorno = await retorno.json()
                         if (retorno.status == 'sucesso') {
@@ -137,5 +204,5 @@ async function carregarProdutos() {
     })
 }
 
-module.exports = { funcaoAbrirModal, funcaoFormulario, carregarProdutos }
+module.exports = { funcaoAbrirModal, funcaoFormulario, carregarProdutos, funcaoModalAlterarFoto }
 
