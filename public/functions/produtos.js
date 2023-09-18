@@ -181,21 +181,23 @@ async function carregarProdutos() {
                 botaoExcluir.classList.add('btn-danger')
                 botaoExcluir.textContent = 'Excluir Produto'
                 botaoExcluir.onclick = async () => {
-                    await fetch('http://localhost/api/produtos', {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-type': 'application/json'
-                        },
-                        body: JSON.stringify({ id: produto.id, imagem: produto.imagem })
-                    }).then(async (retorno) => {
-                        retorno = await retorno.json()
-                        if (retorno.status == 'sucesso') {
-                            alert(`O produto ${produto.nome} foi excluido com sucesso!`)
-                            location.reload()
-                        } else {
-                            alert(retorno.mensagem)
-                        }
-                    })
+                    if (confirm(`Deseja mesmo excluir o produto ${produto.nome}?`)) {
+                        await fetch('http://localhost/api/produtos', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            body: JSON.stringify({ id: produto.id, imagem: produto.imagem })
+                        }).then(async (retorno) => {
+                            retorno = await retorno.json()
+                            if (retorno.status == 'sucesso') {
+                                alert(`O produto ${produto.nome} foi excluido com sucesso!`)
+                                location.reload()
+                            } else {
+                                alert(retorno.mensagem)
+                            }
+                        })
+                    }
                 }
                 document.getElementById(divBotoes.id).appendChild(botaoExcluir)
 

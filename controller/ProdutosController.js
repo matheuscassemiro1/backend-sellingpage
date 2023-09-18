@@ -95,10 +95,16 @@ exports.alterarFoto = async (req, res, next) => {
 
 exports.deletarProduto = async (req, res, next) => {
     try {
+        const consultaFotoAnterior = await Produto.findOne({ where: { id: req.body.id } })
         const resultado = await Produto.destroy({ where: { id: req.body.id } })
+        caminhoFotoAntiga = path.join(__dirname + `./../public/img/${consultaFotoAnterior.dataValues.imagem}`)
+        excluirFoto = fs.unlink(caminhoFotoAntiga, (erro) => {
+            if (erro) throw erro;
+            console.log('Foto antiga excluida com sucesso')
+        })
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     } catch (erro) {
-
-    }
+        console.log(erro)
+    }   
 
 }
