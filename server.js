@@ -60,6 +60,6 @@ app.get('/login', async (req, res, next) => {
 
 
 
-app.listen('80', function () {
-    console.log('ouvindo na porta 80')
+app.listen('3001', function () {
+    console.log('api ligada na porta 3001')
 })
