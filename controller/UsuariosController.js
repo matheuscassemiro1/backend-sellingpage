@@ -10,8 +10,9 @@ exports.tryLogin = async function (req, res, next) {
     try {
         aux = await Usuario.findOne({ where: { login: req.body.login } })
         if (bcrypt.compareSync(req.body.senha, aux.dataValues.senha)) {
-            token = jwt.sign({ login: aux.dataValues.login, dono: aux.dataValues.dono, refreshToken: false }, process.env.SECRETKEY, jwtOptions)
+            token = jwt.sign({ login: aux.dataValues.login, dono: aux.dataValues.dono, refreshToken: false }, 'xhtdwu2krw', jwtOptions)
             res.cookie('token', `bearer ${token}`, { maxAge: 5*60*1000, httpOnly: true, sameSite: 'strict' });
+            console.log("usuario logou")
             res.send(JSON.stringify({ status: 'sucesso', mensagem: token }))
         }
         else {

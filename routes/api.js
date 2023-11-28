@@ -5,7 +5,6 @@ const UsuariosController = require('./../controller/UsuariosController')
 const ProdutosController = require('./../controller/ProdutosController')
 const jwt = require('jsonwebtoken')
 
-const jwt = require('jsonwebtoken')
 
 async function logado(req, res, next) {
     try {
