@@ -9,6 +9,7 @@ const Usuario = require("./model/Usuario")
 const bcrypt = require('bcrypt')
 const bodyParser = require('body-parser');
 const cookieparser = require('cookie-parser')
+const cors=require('cors');
 require('dotenv').config()
 
 
@@ -19,15 +20,16 @@ const fs = require('fs/promises')
 
 app = express()
 
-
-
-app.use(express.static(__dirname + '/public'))
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie");
     next();
   });
+
+app.use(cors())
+
+app.use(express.static(__dirname + '/public'))
 
 app.disable('x-powered-by');
 
