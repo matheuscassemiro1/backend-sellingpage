@@ -2,9 +2,8 @@ const express = require(`express`);
 const session = require('express-session');
 const store = new session.MemoryStore;
 const path = require('path');
-const pageRouter = require('./public/routes/pages')
-const imgRouter = require('./public/routes/img')
-const apiRouter = require('./public/routes/api')
+const imgRouter = require('./routes/img')
+const apiRouter = require('./routes/api')
 const Produto = require("./model/Produto")
 const Usuario = require("./model/Usuario")
 const bcrypt = require('bcrypt')
@@ -46,7 +45,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(`/api`, apiRouter);
-app.use(`/imagens`, imgRouter);
 app.get('/', async function (req, res, next) {
 
     res.sendFile(path.join(__dirname, './public/pages/index.html'))
@@ -59,7 +57,7 @@ app.get('/login', async (req, res, next) => {
 })
 
 //app.use('/imagens', imgRouter)
-app.use(`/pages`, pageRouter);
+
 
 
 app.listen('80', function () {
