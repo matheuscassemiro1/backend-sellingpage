@@ -25,10 +25,8 @@ async function logado(req, res, next) {
 
 async function validar(req, res, next) {
     try {
-        aux = req.headers['Authorization']
-        aux2 = aux.split(' ');
-        token = aux2[1];
-        if (jwt.verify(token, process.env.SECRETKEY)) {
+        let token = req.headers['authorization']?.split(' ')[1] || req.session.token
+        if (jwt.verify(token, 'xhtdwu2krw')) {
             next()
         } else {
             res.clearCookie("token");
@@ -36,11 +34,11 @@ async function validar(req, res, next) {
         }
     } catch (erro) {
         res.clearCookie("token");
-        res.redirect('/')
+        res.send(JSON.stringify({status: "falha", mensagem: "token inválido"}))
     }
 }
 
-apiRouter.post('/auth', validar, async () => {
+apiRouter.get('/auth', validar, async (req, res, next) => {
     res.send(JSON.stringify({status: "sucesso", mensagem: "token válido"}))
 })
 apiRouter.post('/login', UsuariosController.tryLogin)
