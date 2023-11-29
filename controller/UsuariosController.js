@@ -12,11 +12,9 @@ exports.tryLogin = async function (req, res, next) {
         if (bcrypt.compareSync(req.body.senha, aux.dataValues.senha)) {
             token = jwt.sign({ login: aux.dataValues.login, dono: aux.dataValues.dono, refreshToken: false }, 'xhtdwu2krw', jwtOptions)
             res.cookie('token', `bearer ${token}`, { maxAge: 5*60*1000, httpOnly: true, sameSite: 'strict' });
-            console.log("usuario logou")
             res.send(JSON.stringify({ status: 'sucesso', mensagem: token }))
         }
         else {
-            console.log(req.body.login, req.body.senha)
             res.send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
         }
     }

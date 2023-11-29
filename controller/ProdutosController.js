@@ -5,15 +5,23 @@ const Produto = require('.././model/Produto.js')
 
 exports.cadastrarProduto = async function (req, res, next) {
     try {
+        console.log("recebi requisição")
+
         let form = formidable({})
+
         let fields;
         let files;
+
         [fields, files] = await form.parse(req);
+        console.log(fields, files)
+        console.log("passei")
         if (files.imagem) {
+            console.log("entrei")
             const caminhoTemporario = files.imagem[0].filepath;
             aux = files.imagem[0].originalFilename
             aux2 = aux.split('.')
             tipo = aux2[1]
+            console.log("to aq")
             const novoCaminho = path.join(__dirname + './../public/img', `${files.imagem[0].newFilename}` + `.${aux2[1]}`);
             fs.renameSync(caminhoTemporario, novoCaminho);
 
@@ -22,8 +30,9 @@ exports.cadastrarProduto = async function (req, res, next) {
                 preco: fields.preco[0],
                 imagem: `${files.imagem[0].newFilename}.${aux2[1]}`
             })
-            res.send(JSON.stringify({ status: 'sucesso', chamados: aux }))
+            res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
         }
+        console.log("passei2")
     } catch (erro) {
         console.log(erro)
     }
