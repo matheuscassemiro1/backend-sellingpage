@@ -23,7 +23,26 @@ async function logado(req, res, next) {
     }
 }
 
+async function validar(req, res, next) {
+    try {
+        aux = req.headers['Authorization']
+        aux2 = aux.split(' ');
+        token = aux2[1];
+        if (jwt.verify(token, process.env.SECRETKEY)) {
+            next()
+        } else {
+            res.clearCookie("token");
+            res.send(JSON.stringify({status: "falha", mensagem: "token inválido"}))
+        }
+    } catch (erro) {
+        res.clearCookie("token");
+        res.redirect('/')
+    }
+}
 
+apiRouter.post('/auth', validar, async () => {
+    res.send(JSON.stringify({status: "sucesso", mensagem: "token válido"}))
+})
 apiRouter.post('/login', UsuariosController.tryLogin)
 apiRouter.post('/produtos', ProdutosController.cadastrarProduto)
 apiRouter.get('/produtos', ProdutosController.listarProdutos)
