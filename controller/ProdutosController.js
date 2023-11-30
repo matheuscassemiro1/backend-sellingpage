@@ -5,23 +5,17 @@ const Produto = require('.././model/Produto.js')
 
 exports.cadastrarProduto = async function (req, res, next) {
     try {
-        console.log("recebi requisição")
-
         let form = formidable({})
 
         let fields;
         let files;
 
         [fields, files] = await form.parse(req);
-        console.log(fields, files)
-        console.log("passei")
         if (files.imagem) {
-            console.log("entrei")
             const caminhoTemporario = files.imagem[0].filepath;
             aux = files.imagem[0].originalFilename
             aux2 = aux.split('.')
             tipo = aux2[1]
-            console.log("to aq")
             const novoCaminho = path.join(__dirname + './../public/img', `${files.imagem[0].newFilename}` + `.${aux2[1]}`);
             fs.renameSync(caminhoTemporario, novoCaminho);
 
@@ -31,10 +25,11 @@ exports.cadastrarProduto = async function (req, res, next) {
                 imagem: `${files.imagem[0].newFilename}.${aux2[1]}`
             })
             res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
+        } else {
+            res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao cadastrar o produto' }))
         }
-        console.log("passei2")
     } catch (erro) {
-        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
     //RECEBER A IMAGEM
 
@@ -46,7 +41,7 @@ exports.listarProdutos = async (req, res, next) => {
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
-        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -56,7 +51,7 @@ exports.alterarProduto = async (req, res, next) => {
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
-        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -95,7 +90,6 @@ exports.alterarFoto = async (req, res, next) => {
         }
 
     } catch (erro) {
-        console.log(erro)
         res.send(JSON.stringify({ status: "falha", mensagem: "erro ao consumir a api" }))
     }
     //_dirname + './../public/img
@@ -113,7 +107,7 @@ exports.deletarProduto = async (req, res, next) => {
         })
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     } catch (erro) {
-        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }   
 
 }
