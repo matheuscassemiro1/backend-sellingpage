@@ -45,9 +45,9 @@ exports.listarProdutos = async (req, res, next) => {
     }
 }
 
-exports.alterarProduto = async (req, res, next) => {
+exports.alterarPreco = async (req, res, next) => {
     try {
-        const resultado = await Produto.update({ preco: req.body.preco, imagem: req.body.imagem }, { where: { id: req.body.id } })
+        const resultado = await Produto.update({ preco: req.body.preco }, { where: { id: req.body.id } })
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
@@ -61,7 +61,6 @@ exports.alterarFoto = async (req, res, next) => {
         let fields;
         let files;
         [fields, files] = await form.parse(req);
-        console.log(files, fields)
         if (!fields || !files) {
             res.send(JSON.stringify({ status: "falha", mensagem: "erro ao carregar a nova foto" }))
         } else {
