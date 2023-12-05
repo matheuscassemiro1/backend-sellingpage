@@ -51,6 +51,7 @@ exports.alterarPreco = async (req, res, next) => {
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
+        console.log(erro)
         res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
