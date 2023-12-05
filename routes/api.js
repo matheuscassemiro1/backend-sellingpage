@@ -3,6 +3,7 @@ const path = require("path");
 const apiRouter = express()
 const UsuariosController = require('./../controller/UsuariosController')
 const ProdutosController = require('./../controller/ProdutosController')
+const ConfigController = require('./../controller/ConfigController')
 const jwt = require('jsonwebtoken')
 const rateLimit = require('express-rate-limit');
 
@@ -57,6 +58,9 @@ apiRouter.get('/produtos', ProdutosController.listarProdutos)
 apiRouter.delete('/produtos', ProdutosController.deletarProduto)
 apiRouter.put('/produto', ProdutosController.alterarPreco)
 apiRouter.put('/produto-foto', ProdutosController.alterarFoto)
+apiRouter.get('/whatsapp', ConfigController.listarWhatsapp)
+apiRouter.put('/whatsapp', logado, ConfigController.alterarWhatsapp)
+apiRouter.post('/whatsapp', logado, ConfigController.cadastrarWhatsapp)
 UsuariosController.coringa()
 
 module.exports = apiRouter
