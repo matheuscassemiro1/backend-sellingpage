@@ -27,6 +27,8 @@ exports.alterarWhatsapp = async (req, res, next) => {
 
 exports.cadastrarWhatsapp = async (req, res, next) => {
     try {
+        console.log(req.body)
+        console.log("pas")
         const resultado = await Config.create({parametro: 'whatsapp', valor: req.body.whatsapp})
         if (resultado){
             res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
