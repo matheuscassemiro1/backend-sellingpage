@@ -1,7 +1,7 @@
 const express = require(`express`);
 const imgRouter = express.Router()
 const path = require('path');
-const ImagensController = require('./../../controller/ImagensController')
+const ImagensController = require('./../controller/ImagensController')
 
 
 imgRouter.get('/logotipo', ImagensController.logotipo);

@@ -1,8 +1,8 @@
 const Sequelize = require("sequelize");
 
 
-const sequelize = new Sequelize("cervejaria", "root", "", {
-    host: 'localhost',
+const sequelize = new Sequelize("mm", "multimarcas", "xhtdwu2", {
+    host: '127.0.0.1',
     dialect: 'mysql',
     port: '3306',
     timezone: '-03:00',

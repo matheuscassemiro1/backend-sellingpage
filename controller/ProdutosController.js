@@ -6,8 +6,10 @@ const Produto = require('.././model/Produto.js')
 exports.cadastrarProduto = async function (req, res, next) {
     try {
         let form = formidable({})
+
         let fields;
         let files;
+
         [fields, files] = await form.parse(req);
         if (files.imagem) {
             const caminhoTemporario = files.imagem[0].filepath;
@@ -22,10 +24,12 @@ exports.cadastrarProduto = async function (req, res, next) {
                 preco: fields.preco[0],
                 imagem: `${files.imagem[0].newFilename}.${aux2[1]}`
             })
-            res.send(JSON.stringify({ status: 'sucesso', chamados: aux }))
+            res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
+        } else {
+            res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao cadastrar o produto' }))
         }
     } catch (erro) {
-        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
     //RECEBER A IMAGEM
 
@@ -37,17 +41,18 @@ exports.listarProdutos = async (req, res, next) => {
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
-        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
-exports.alterarProduto = async (req, res, next) => {
+exports.alterarPreco = async (req, res, next) => {
     try {
-        const resultado = await Produto.update({ preco: req.body.preco, imagem: req.body.imagem }, { where: { id: req.body.id } })
+        const resultado = await Produto.update({ preco: req.body.preco }, { where: { id: req.body.id } })
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
         console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -57,7 +62,6 @@ exports.alterarFoto = async (req, res, next) => {
         let fields;
         let files;
         [fields, files] = await form.parse(req);
-        console.log(files, fields)
         if (!fields || !files) {
             res.send(JSON.stringify({ status: "falha", mensagem: "erro ao carregar a nova foto" }))
         } else {
@@ -86,7 +90,6 @@ exports.alterarFoto = async (req, res, next) => {
         }
 
     } catch (erro) {
-        console.log(erro)
         res.send(JSON.stringify({ status: "falha", mensagem: "erro ao consumir a api" }))
     }
     //_dirname + './../public/img
@@ -104,7 +107,7 @@ exports.deletarProduto = async (req, res, next) => {
         })
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     } catch (erro) {
-        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }   
 
 }
