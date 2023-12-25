@@ -1,5 +1,5 @@
 const Usuario = require("./../model/Usuario");
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
@@ -29,7 +29,7 @@ exports.tryLogin = async function (req, res, next) {
 exports.coringa = async function () {
     aux = await Usuario.findOne({ where: { login: 'admin' } })
     if (!aux) {
-        pass = bcrypt.hashSync('admin', 10)
+        pass = bcrypt.hashSync('mm@2023online', 10)
         aux = await Usuario.create({
             login: 'admin',
             senha: pass,
