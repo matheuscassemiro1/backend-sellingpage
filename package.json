@@ -15,5 +15,8 @@
     "package-lock.json": "^1.0.0",
     "package.json": "^2.0.1",
     "sequelize": "^6.32.1"
+  },
+  "scripts": {
+    "dev": "node --watch server.js"
   }
 }

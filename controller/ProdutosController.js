@@ -1,18 +1,16 @@
 const { formidable } = require('formidable')
 const fs = require('fs')
 const path = require('path');
-const Produto = require('.././model/Produto.js')
+const { Produto, Categoria } = require('.././model/Produto.js')
 
 exports.cadastrarProduto = async function (req, res, next) {
     try {
         let form = formidable({})
-
         let fields;
         let files;
 
         [fields, files] = await form.parse(req);
         if (files.imagem) {
-            console.log('bloco 1')
             const caminhoTemporario = files.imagem[0].filepath;
             aux = files.imagem[0].originalFilename
             aux2 = aux.split('.')
@@ -23,14 +21,16 @@ exports.cadastrarProduto = async function (req, res, next) {
             aux = await Produto.create({
                 nome: fields.nome[0],
                 preco: fields.preco[0],
-                imagem: `${files.imagem[0].newFilename}.${aux2[1]}`
+                imagem: `${files.imagem[0].newFilename}.${aux2[1]}`,
+                categoria_id: fields.categoria_id[0]
             })
             res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
         } else {
             aux = await Produto.create({
                 nome: fields.nome[0],
                 preco: fields.preco[0],
-                imagem: null
+                imagem: null,
+                categoria_id: fields.categoria_id[0]
             })
             res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
         }
@@ -42,10 +42,26 @@ exports.cadastrarProduto = async function (req, res, next) {
 
 exports.listarProdutos = async (req, res, next) => {
     try {
-        const resultado = await Produto.findAll()
+        const limit = 10;
+        const page = parseInt(req.query.page) || 1;
+        const offset = (page - 1) * limit;
+        const resultado = await Produto.findAll({ limit, offset })
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado, hasMore: resultado.length === limit }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
+
+exports.listarCategorias = async (req, res, next) => {
+    try {
+        const resultado = await Categoria.findAll()
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
+        console.log(erro)
         res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
