@@ -12,6 +12,7 @@ exports.cadastrarProduto = async function (req, res, next) {
 
         [fields, files] = await form.parse(req);
         if (files.imagem) {
+            console.log('bloco 1')
             const caminhoTemporario = files.imagem[0].filepath;
             aux = files.imagem[0].originalFilename
             aux2 = aux.split('.')
@@ -26,13 +27,17 @@ exports.cadastrarProduto = async function (req, res, next) {
             })
             res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
         } else {
-            res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao cadastrar o produto' }))
+            aux = await Produto.create({
+                nome: fields.nome[0],
+                preco: fields.preco[0],
+                imagem: null
+            })
+            res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
         }
     } catch (erro) {
+        console.log(erro)
         res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
-    //RECEBER A IMAGEM
-
 }
 
 exports.listarProdutos = async (req, res, next) => {
@@ -108,6 +113,6 @@ exports.deletarProduto = async (req, res, next) => {
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     } catch (erro) {
         res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
-    }   
+    }
 
 }

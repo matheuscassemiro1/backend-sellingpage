@@ -20,7 +20,7 @@ Produto.init({
     },
     imagem: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     }
 
 }, { sequelize: db, modelName: 'produtos' })
