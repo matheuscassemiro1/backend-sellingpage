@@ -21,13 +21,13 @@ Produto.init({
     },
     imagem: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     categoria_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-            model: 'Categoria',
+            model: 'categorias',
             key: 'id',
           },
     }
