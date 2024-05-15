@@ -1,7 +1,8 @@
 const { formidable } = require('formidable')
 const fs = require('fs')
 const path = require('path');
-const { Produto, Categoria } = require('.././model/Produto.js')
+const { Produto, Categoria } = require('.././model/Produto.js');
+const { where } = require('sequelize');
 
 exports.cadastrarProduto = async function (req, res, next) {
     try {
@@ -54,6 +55,17 @@ exports.listarProdutos = async (req, res, next) => {
     }
 }
 
+exports.listarProdutosPainel = async (req, res, next) => {
+    try {
+
+        const resultado = await Produto.findAll({ include: [{ model: Categoria }] })
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
 
 exports.listarCategorias = async (req, res, next) => {
     try {
@@ -71,6 +83,19 @@ exports.criarCategoria = async (req, res, next) => {
         const resultado = await Categoria.create({
             categoria: req.body.categoria
         })
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
+exports.alterarCategoriaProduto = async (req, res, next) => {
+    try {
+        const resultado = await Produto.update({
+            categoria_id: req.body.categoria
+        }, { where: { id: req.body.id } })
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
