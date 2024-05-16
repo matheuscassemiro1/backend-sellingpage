@@ -55,6 +55,17 @@ exports.listarProdutos = async (req, res, next) => {
     }
 }
 
+exports.listarProdutosCategoria = async (req, res, next) => {
+    try {
+        const resultado = await Produto.findAll({where: {categoria_id: req.params.categoria}})
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
 exports.listarProdutosPainel = async (req, res, next) => {
     try {
 

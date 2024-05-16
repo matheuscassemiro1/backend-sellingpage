@@ -8,11 +8,10 @@ const jwt = require('jsonwebtoken')
 const rateLimit = require('express-rate-limit');
 
 const limiter = rateLimit({
-    windowMs: 5 * 60 * 1000, // Define o intervalo de tempo em milissegundos (aqui, 5 minutos)
-    max: 3, // Define o número máximo de requisições permitidas nesse intervalo de tempo
+    windowMs: 5 * 60 * 1000,
+    max: 3,
     message: JSON.stringify({status: "falha", mensagem: "Você atingiu o limite de tentativas de login. Por favor, tente novamente mais tarde."}),
     onLimitReached: (req, res, options) => {
-        // Aqui, você pode enviar um alerta ou mensagem de erro para o cliente quando o limite for atingido
         res.status(429).send(JSON.stringify({status: "falha", mensagem: "Você atingiu o limite de tentativas de login. Por favor, tente novamente mais tarde."}));
     },
 });
@@ -53,6 +52,7 @@ apiRouter.get('/auth', validar, async (req, res, next) => {
 apiRouter.post('/login', limiter, UsuariosController.tryLogin)
 apiRouter.post('/produtos', ProdutosController.cadastrarProduto)
 apiRouter.get('/produtos', ProdutosController.listarProdutos)
+apiRouter.get('/produtos/:categoria', ProdutosController.listarProdutosCategoria)
 apiRouter.get('/produtos-painel', ProdutosController.listarProdutosPainel)
 apiRouter.post('/categorias', ProdutosController.criarCategoria)
 apiRouter.get('/categorias', ProdutosController.listarCategorias)
