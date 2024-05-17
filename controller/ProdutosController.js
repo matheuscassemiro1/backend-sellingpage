@@ -2,7 +2,6 @@ const { formidable } = require('formidable')
 const fs = require('fs')
 const path = require('path');
 const { Produto, Categoria } = require('.././model/Produto.js');
-const { where } = require('sequelize');
 
 exports.cadastrarProduto = async function (req, res, next) {
     try {

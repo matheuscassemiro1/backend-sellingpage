@@ -17,7 +17,6 @@ exports.tryLogin = async function (req, res, next) {
             res.send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
         }
     }
-
     catch {
         console.log(req.body.login, req.body.senha)
         res.send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
