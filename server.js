@@ -26,12 +26,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(cookieparser());
-app.get("/", (req, res) => res.send("Deploy feito"));
+
 app.use(`/api`, apiRouter);
 app.use('/img', imgRouter)
 
 
 
-app.listen('443', function () {
+app.listen('3001', function () {
     console.log('api ligada na porta 3001')
 })

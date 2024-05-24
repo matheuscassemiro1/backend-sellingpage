@@ -34,6 +34,7 @@ async function logado(req, res, next) {
 apiRouter.get('/auth', logado, async (req, res, next) => {
     res.send(JSON.stringify({ status: "sucesso", mensagem: "token válido" }))
 })
+apiRouter.get("/", (req, res) => res.send("Deploy feito"));
 apiRouter.post('/login', limiter, UsuariosController.tryLogin)
 apiRouter.post('/produtos', logado, ProdutosController.cadastrarProduto)
 apiRouter.get('/produtos', ProdutosController.listarProdutos)
