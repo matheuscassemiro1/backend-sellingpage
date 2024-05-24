@@ -1,8 +1,5 @@
 {
-    "redirects": [
-      {
-        "source": "/:path*",
-        "destination": "/api/:path*"
-      }
+    "rewrites": [
+      { "source": "/:path*", "destination": "/api/:path*" }
     ]
   }
