@@ -1,7 +1,9 @@
 const Sequelize = require("sequelize");
 const pg = require("pg")
 
-const sequelize = new Sequelize("verceldb", "default", "dLMnYOb0T2tZ", {
+const sequelize = new Sequelize(process.env.DB_NAME,
+    process.env.DB_USERNAME,
+    process.env.DB_PASSWORD, {
     host: 'ep-dawn-band-a4m5hehl-pooler.us-east-1.aws.neon.tech',
     dialect: 'postgres',
     port: '5432',
