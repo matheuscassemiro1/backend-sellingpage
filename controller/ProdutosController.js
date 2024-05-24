@@ -1,12 +1,11 @@
 const { formidable } = require('formidable')
 const fs = require('fs')
 const path = require('path');
-const Produto = require('.././model/Produto.js')
+const { Produto, Categoria } = require('.././model/Produto.js');
 
 exports.cadastrarProduto = async function (req, res, next) {
     try {
         let form = formidable({})
-
         let fields;
         let files;
 
@@ -22,25 +21,111 @@ exports.cadastrarProduto = async function (req, res, next) {
             aux = await Produto.create({
                 nome: fields.nome[0],
                 preco: fields.preco[0],
-                imagem: `${files.imagem[0].newFilename}.${aux2[1]}`
+                imagem: `${files.imagem[0].newFilename}.${aux2[1]}`,
+                categoria_id: fields.categoria[0]
             })
             res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
         } else {
-            res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao cadastrar o produto' }))
+            aux = await Produto.create({
+                nome: fields.nome[0],
+                preco: fields.preco[0],
+                imagem: null,
+                categoria_id: fields.categoria[0]
+            })
+            res.send(JSON.stringify({ status: 'sucesso', mensagem: aux }))
         }
     } catch (erro) {
+        console.log(erro)
         res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
-    //RECEBER A IMAGEM
-
 }
 
 exports.listarProdutos = async (req, res, next) => {
     try {
-        const resultado = await Produto.findAll()
+        const limit = 10;
+        const page = parseInt(req.query.page) || 1;
+        const offset = (page - 1) * limit;
+        const resultado = await Produto.findAll({ limit, offset })
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado, hasMore: resultado.length === limit }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
+exports.listarProdutosCategoria = async (req, res, next) => {
+    try {
+        const resultado = await Produto.findAll({where: {categoria_id: req.params.categoria}})
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     }
     catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
+exports.listarProdutosPainel = async (req, res, next) => {
+    try {
+
+        const resultado = await Produto.findAll({ include: [{ model: Categoria }] })
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
+exports.listarCategorias = async (req, res, next) => {
+    try {
+        const resultado = await Categoria.findAll()
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
+exports.criarCategoria = async (req, res, next) => {
+    try {
+        const resultado = await Categoria.create({
+            categoria: req.body.categoria
+        })
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
+exports.alterarCategoriaProduto = async (req, res, next) => {
+    try {
+        const resultado = await Produto.update({
+            categoria_id: req.body.categoria
+        }, { where: { id: req.body.id } })
+        res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+    }
+    catch (erro) {
+        console.log(erro)
+        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+    }
+}
+
+exports.deletarCategoria = async (req, res, next) => {
+    try {
+        if (req.params.id) {
+            const resultado = await Categoria.destroy({ where: { id: req.params.id } })
+            res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
+        } else {
+            throw new Error("Falha ao deletar, faltou id.")
+        }
+
+    }
+    catch (erro) {
+        console.log(erro)
         res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
@@ -78,11 +163,13 @@ exports.alterarFoto = async (req, res, next) => {
                 nomeFoto = `${files.imagem[0].newFilename}` + `.${aux2[1]}`
                 const novaFoto = await Produto.update({ imagem: nomeFoto }, { where: { id: consultaFotoAnterior.dataValues.id } })
 
-                caminhoFotoAntiga = path.join(__dirname + `./../public/img/${consultaFotoAnterior.dataValues.imagem}`)
-                excluirFoto = fs.unlink(caminhoFotoAntiga, (erro) => {
-                    if (erro) throw erro;
-                    console.log('Foto antiga excluida com sucesso')
-                })
+                if (consultaFotoAnterior.dataValues.imagem != null) {
+                    caminhoFotoAntiga = path.join(__dirname + `./../public/img/${consultaFotoAnterior.dataValues.imagem}`)
+                    excluirFoto = fs.unlink(caminhoFotoAntiga, (erro) => {
+                        if (erro) throw erro;
+                        console.log('Foto antiga excluida com sucesso')
+                    })
+                }
                 res.send(JSON.stringify({ status: "sucesso", mensagem: "a foto do produto foi alterada com sucesso" }))
             } else {
                 res.send(JSON.stringify({ status: "falha", mensagem: "erro ao localizar o produto" }))
@@ -100,14 +187,16 @@ exports.deletarProduto = async (req, res, next) => {
     try {
         const consultaFotoAnterior = await Produto.findOne({ where: { id: req.body.id } })
         const resultado = await Produto.destroy({ where: { id: req.body.id } })
-        caminhoFotoAntiga = path.join(__dirname + `./../public/img/${consultaFotoAnterior.dataValues.imagem}`)
-        excluirFoto = fs.unlink(caminhoFotoAntiga, (erro) => {
-            if (erro) throw erro;
-            console.log('Foto antiga excluida com sucesso')
-        })
+        if (consultaFotoAnterior.dataValues.imagem != null) {
+            caminhoFotoAntiga = path.join(__dirname + `./../public/img/${consultaFotoAnterior.dataValues.imagem}`)
+            excluirFoto = fs.unlink(caminhoFotoAntiga, (erro) => {
+                if (erro) throw erro;
+                console.log('Foto antiga excluida com sucesso')
+            })
+        }
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     } catch (erro) {
         res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
-    }   
+    }
 
 }

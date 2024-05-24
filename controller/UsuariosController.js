@@ -1,35 +1,51 @@
 const Usuario = require("./../model/Usuario");
 const bcrypt = require('bcryptjs')
-require('dotenv').config()
+require('dotenv')
 const jwt = require('jsonwebtoken')
 
-const jwtOptions = { expiresIn: 10000 }
+const jwtOptions = { expiresIn: '3h' }
 
 
 exports.tryLogin = async function (req, res, next) {
     try {
         aux = await Usuario.findOne({ where: { login: req.body.login } })
         if (bcrypt.compareSync(req.body.senha, aux.dataValues.senha)) {
-            token = jwt.sign({ login: aux.dataValues.login, dono: aux.dataValues.dono, refreshToken: false }, 'xhtdwu2krw', jwtOptions)
-            res.cookie('token', `bearer ${token}`, { maxAge: 5*60*1000, httpOnly: true, sameSite: 'strict' });
+            token = jwt.sign({ login: aux.dataValues.login, dono: aux.dataValues.dono, refreshToken: false }, process.env.SECRET, jwtOptions)
             res.send(JSON.stringify({ status: 'sucesso', mensagem: token }))
         }
         else {
             res.send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
         }
     }
-
     catch {
         console.log(req.body.login, req.body.senha)
         res.send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
     }
 }
 
+exports.alterarSenha = async function (req, res, next) {
+    try {
+        if (req.body.token == process.env.TOKEN_PASS) {
+            pass = bcrypt.hashSync(req.body.senha, 10)
+            const resposta = await Usuario.update({ senha: pass }, { where: { login: 'admin' } })
+            if (resposta) {
+                res.send(JSON.stringify({ status: 'sucesso', mensagem: resposta }))
+            } else {
+                throw new Error("Falha ao inserir a nova senha")
+            }
+        } else {
+            throw new Error("Token inválido")
+        }
+    } catch (error) {
+        console.log(error)
+        res.send(JSON.stringify({ status: 'falha', mensagem: error.message }))
+    }
+}
 
 exports.coringa = async function () {
     aux = await Usuario.findOne({ where: { login: 'admin' } })
     if (!aux) {
-        pass = bcrypt.hashSync('mm@2023online', 10)
+        pass = bcrypt.hashSync(process.env.FPASSWORD, 10)
         aux = await Usuario.create({
             login: 'admin',
             senha: pass,
