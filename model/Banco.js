@@ -9,7 +9,10 @@ const sequelize = new Sequelize("verceldb", "default", "dLMnYOb0T2tZ", {
     dialectOptions: {
         dateStrings: true,
         typeCast: true,
-        timezone: "-03:00"
+        timezone: "-03:00",
+        ssl: {
+            require: false
+        }
     },
     timezone: "-03:00",
 });
