@@ -32,6 +32,6 @@ app.use('/img', imgRouter)
 
 
 
-app.listen('3001', function () {
-    console.log('api ligada na porta 3001')
+app.listen('80', function () {
+    console.log('api ligada na porta 80')
 })
