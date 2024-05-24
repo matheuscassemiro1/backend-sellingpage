@@ -1,10 +1,10 @@
 const Sequelize = require("sequelize");
 
 
-const sequelize = new Sequelize("mm", "root", "", {
-    host: '127.0.0.1',
-    dialect: 'mysql',
-    port: '3306',
+const sequelize = new Sequelize("verceldb", "default", "dLMnYOb0T2tZ", {
+    host: 'ep-dawn-band-a4m5hehl-pooler.us-east-1.aws.neon.tech',
+    dialect: 'postgres',
+    port: '5432',
     timezone: '-03:00',
     dialectOptions: {
         dateStrings: true,
