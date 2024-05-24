@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-
+const pg = require("pg")
 
 const sequelize = new Sequelize("verceldb", "default", "dLMnYOb0T2tZ", {
     host: 'ep-dawn-band-a4m5hehl-pooler.us-east-1.aws.neon.tech',
@@ -12,8 +12,11 @@ const sequelize = new Sequelize("verceldb", "default", "dLMnYOb0T2tZ", {
         timezone: "-03:00",
         ssl: {
             require: false
-        }
+        },
+        dialectModule: pg,
+        module: pg
     },
+    dialectModule: pg,
     timezone: "-03:00",
 });
 
