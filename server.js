@@ -26,7 +26,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(cookieparser());
-
+app.get("/teste", (req, res) => {
+    res.send("opa")
+})
 app.use(`/api`, apiRouter);
 app.use('/img', imgRouter)
 
