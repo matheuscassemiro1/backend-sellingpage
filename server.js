@@ -20,14 +20,13 @@ app.use(function (req, res, next) {
 app.use(cors())
 app.use(express.static(__dirname + '/public'))
 app.disable('x-powered-by');
-
-
 //REGRA PARA RECEBER DADOS VINDOS EM CABEÇALHO E CORPO DAS REQUISIÇÕES
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(cookieparser());
+app.get("/", (req, res) => res.send("Deploy feito"));
 app.use(`/api`, apiRouter);
 app.use('/img', imgRouter)
 
