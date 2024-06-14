@@ -14,12 +14,12 @@ exports.tryLogin = async function (req, res, next) {
             res.send(JSON.stringify({ status: 'sucesso', mensagem: token }))
         }
         else {
-            res.send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
+            res.status(400).send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
         }
     }
     catch {
         console.log(req.body.login, req.body.senha)
-        res.send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: `login ou senha incorretos` }))
     }
 }
 
@@ -38,7 +38,7 @@ exports.alterarSenha = async function (req, res, next) {
         }
     } catch (error) {
         console.log(error)
-        res.send(JSON.stringify({ status: 'falha', mensagem: error.message }))
+        res.status(400).send(JSON.stringify({ status: 'falha', mensagem: error.message }))
     }
 }
 

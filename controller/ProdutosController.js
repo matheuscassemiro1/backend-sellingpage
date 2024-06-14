@@ -36,7 +36,7 @@ exports.cadastrarProduto = async function (req, res, next) {
         }
     } catch (erro) {
         console.log(erro)
-        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -50,7 +50,7 @@ exports.listarProdutos = async (req, res, next) => {
     }
     catch (erro) {
         console.log(erro)
-        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -61,7 +61,7 @@ exports.listarProdutosCategoria = async (req, res, next) => {
     }
     catch (erro) {
         console.log(erro)
-        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -97,7 +97,7 @@ exports.criarCategoria = async (req, res, next) => {
     }
     catch (erro) {
         console.log(erro)
-        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -110,7 +110,7 @@ exports.alterarCategoriaProduto = async (req, res, next) => {
     }
     catch (erro) {
         console.log(erro)
-        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -120,13 +120,13 @@ exports.deletarCategoria = async (req, res, next) => {
             const resultado = await Categoria.destroy({ where: { id: req.params.id } })
             res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
         } else {
-            throw new Error("Falha ao deletar, faltou id.")
+           res.status(400).send(JSON.stringify({status: "falha", mensagem: "O parâmetro ID é obrigatório"}))
         }
 
     }
     catch (erro) {
         console.log(erro)
-        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -137,7 +137,7 @@ exports.alterarPreco = async (req, res, next) => {
     }
     catch (erro) {
         console.log(erro)
-        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 }
 
@@ -172,12 +172,12 @@ exports.alterarFoto = async (req, res, next) => {
                 }
                 res.send(JSON.stringify({ status: "sucesso", mensagem: "a foto do produto foi alterada com sucesso" }))
             } else {
-                res.send(JSON.stringify({ status: "falha", mensagem: "erro ao localizar o produto" }))
+                res.status(400).send(JSON.stringify({ status: "falha", mensagem: "erro ao localizar o produto" }))
             }
         }
 
     } catch (erro) {
-        res.send(JSON.stringify({ status: "falha", mensagem: "erro ao consumir a api" }))
+        res.status(500).send(JSON.stringify({ status: "falha", mensagem: "erro ao consumir a api" }))
     }
     //_dirname + './../public/img
     //fs.unlink()
@@ -196,7 +196,7 @@ exports.deletarProduto = async (req, res, next) => {
         }
         res.send(JSON.stringify({ status: "sucesso", mensagem: resultado }))
     } catch (erro) {
-        res.send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
+        res.status(500).send(JSON.stringify({ status: 'falha', mensagem: 'ocorreu um erro ao consumir a api' }))
     }
 
 }

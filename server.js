@@ -6,10 +6,7 @@ const cookieparser = require('cookie-parser')
 const cors = require('cors');
 require('dotenv').config({ path: './.env', override: true })
 
-//PERMITINDO ACESSO SEM MUITAS BURORACIAS NO CABEÇALHO
-
 app = express()
-
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
@@ -20,7 +17,6 @@ app.use(function (req, res, next) {
 app.use(cors())
 app.use(express.static(__dirname + '/public'))
 app.disable('x-powered-by');
-//REGRA PARA RECEBER DADOS VINDOS EM CABEÇALHO E CORPO DAS REQUISIÇÕES
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
